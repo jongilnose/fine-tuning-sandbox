@@ -86,7 +86,7 @@ export default function Home() {
                 type="file"
                 onChange={handleFileChange}
                 ref={inputRef}
-                className="w-full rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300"
+                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
               />
             </div>
             <div className="text-right mt-2">

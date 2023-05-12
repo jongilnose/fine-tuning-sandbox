@@ -1,3 +1,4 @@
+import DefaultButton from '@/components/buttons/DefaultButton';
 import Spinner from '@/components/common/Spinner';
 import Layout from '@/components/layout/Layout';
 import ModelList from '@/components/models/ModelList';
@@ -10,15 +11,14 @@ export default function models() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
       await getModels();
-      setIsLoading(false);
     };
     fetchData();
   }, []);
 
   const getModels = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch('/api/model', {
         method: 'GET',
         headers: {
@@ -32,12 +32,17 @@ export default function models() {
       setModelsInput([...data]);
     } catch (error) {
       console.error('Error fine tuning file:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <Layout>
       <div className="content-wrap">
+        <div>
+          <DefaultButton label="새로고침" isLoading={isLoading} onClick={getModels} />
+        </div>
         {isLoading ? (
           <Spinner />
         ) : (

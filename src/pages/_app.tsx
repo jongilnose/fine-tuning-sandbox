@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
       <ToastContainer
         position="top-center"
         autoClose={300}

@@ -1,3 +1,4 @@
+import DefaultButton from '@/components/buttons/DefaultButton';
 import Spinner from '@/components/common/Spinner';
 import FileList from '@/components/files/FileList';
 import Layout from '@/components/layout/Layout';
@@ -11,15 +12,14 @@ export default function files() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
       await getFiles();
-      setIsLoading(false);
     };
     fetchData();
   }, []);
 
   const getFiles = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch('/api/file', {
         method: 'GET',
         headers: {
@@ -32,13 +32,18 @@ export default function files() {
       const data = await response.json();
       setFilesInput([...data]);
     } catch (error) {
-      showToast('warn', '삭제 도중에 오류가 발생했습니다.');
+      showToast('warn', '데이터를 가져오는 중 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <Layout>
       <div className="content-wrap">
+        <div>
+          <DefaultButton label="새로고침" isLoading={isLoading} onClick={getFiles} />
+        </div>
         {isLoading ? (
           <Spinner />
         ) : (
