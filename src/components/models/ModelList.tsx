@@ -6,7 +6,7 @@ import DefaultButton from '../buttons/DefaultButton';
 import Badge from '../common/Badge';
 interface ModelListProps {
   model: Model;
-  onModelAction: () => void;
+  onModelAction: (type: string, fineTunedModel: string) => void;
 }
 export default function ModelList({ model, onModelAction }: ModelListProps) {
   const [deleteModelIsLoading, setDeleteModelIsLoading] = useState(false);
@@ -26,7 +26,9 @@ export default function ModelList({ model, onModelAction }: ModelListProps) {
     } catch (error) {
       showToast('warn', '삭제할 수 없는 모델입니다.');
     } finally {
-      onModelAction();
+      if (model.fine_tuned_model) {
+        onModelAction('delete', model.fine_tuned_model);
+      }
       setDeleteModelIsLoading(false);
     }
   };
@@ -45,7 +47,9 @@ export default function ModelList({ model, onModelAction }: ModelListProps) {
       console.error('Error deleting file:', error);
       showToast('warn', 'Fine tune을 취소하는 과정에서 오류가 발생했습니다.');
     } finally {
-      onModelAction();
+      if (model.id) {
+        onModelAction('cancel', model.id);
+      }
       setCancelFinetuneIsLoading(false);
     }
   };

@@ -38,6 +38,22 @@ export default function files() {
     }
   };
 
+  const mutateFileById = async (type: string, target: string) => {
+    if (type == 'delete') {
+      console.log('delete');
+      const newFiles = files.filter((item: any) => item.id !== target);
+      setFilesInput(newFiles);
+    } else if (type == 'cancel') {
+      const newFiles = files.map(file => {
+        if (file.id === target) {
+          return { ...file, status: 'cancelled' };
+        }
+        return file;
+      });
+      setFilesInput(newFiles);
+    }
+  };
+
   return (
     <Layout>
       <div className="content-wrap">
@@ -51,7 +67,7 @@ export default function files() {
             {files.length > 0 ? (
               <ul role="list" className="divide-y divide-gray-100">
                 {files.map((file: RawFile) => (
-                  <FileList file={file} key={file.id} onFileAction={getFiles}></FileList>
+                  <FileList file={file} key={file.id} onFileAction={mutateFileById}></FileList>
                 ))}
               </ul>
             ) : (

@@ -30,10 +30,26 @@ export default function models() {
       }
       const data = await response.json();
       setModelsInput([...data]);
+      console.log(models);
     } catch (error) {
       console.error('Error fine tuning file:', error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const mutateModelById = async (type: string, target: string) => {
+    if (type == 'delete') {
+      const newModels = models.filter((item: any) => item.id !== target);
+      setModelsInput(newModels);
+    } else if (type == 'cancel') {
+      const newModels = models.map(model => {
+        if (model.id === target) {
+          return { ...model, status: 'cancelled' };
+        }
+        return model;
+      });
+      setModelsInput(newModels);
     }
   };
 
@@ -50,7 +66,7 @@ export default function models() {
             {models.length > 0 ? (
               <ul role="list" className="divide-y divide-gray-100">
                 {models.map((model: Model) => (
-                  <ModelList model={model} key={model.id} onModelAction={getModels}></ModelList>
+                  <ModelList model={model} key={model.id} onModelAction={mutateModelById}></ModelList>
                 ))}
               </ul>
             ) : (

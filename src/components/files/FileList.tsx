@@ -6,7 +6,7 @@ import DefaultButton from '../buttons/DefaultButton';
 
 interface FileListProps {
   file: RawFile;
-  onFileAction: () => void;
+  onFileAction: (type: string, target: string) => void;
 }
 
 export default function FileList({ file, onFileAction }: FileListProps) {
@@ -26,7 +26,9 @@ export default function FileList({ file, onFileAction }: FileListProps) {
     } catch (error) {
       showToast('warn', '삭제할 수 없는 파일입니다.');
     } finally {
-      onFileAction();
+      if (file.id) {
+        onFileAction('delete', file.id);
+      }
       setDeleteFileIsLoading(false);
     }
   };
@@ -50,7 +52,9 @@ export default function FileList({ file, onFileAction }: FileListProps) {
     } catch (error) {
       console.error('Error fine tuning file:', error);
     } finally {
-      onFileAction();
+      if (file.id) {
+        onFileAction('delete', file.id);
+      }
       setCreateFinetuneIsLoading(false);
     }
   };
